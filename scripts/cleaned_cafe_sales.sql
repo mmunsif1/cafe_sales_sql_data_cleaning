@@ -190,7 +190,7 @@ clean_step4 AS (
 -- -------------------------------------------------------------------------------------
 -- Purpose:
 -- - This step retains all rows from the previous step (`clean_step4`)
--- - Missing numerical values are imputed using average values from available data
+-- - Missing numerical values are imputed using average values from available data (Rounded to 2 Decimals)
 --
 -- Columns affected:
 -- - quantity           → filled with AVG(quantity)
@@ -210,18 +210,22 @@ clean_step5 AS (
   SELECT
     transaction_id,
     item,
+
     COALESCE(
       quantity,
-      (SELECT AVG(quantity) FROM clean_step4 WHERE quantity IS NOT NULL)
+      ROUND((SELECT AVG(quantity) FROM clean_step4 WHERE quantity IS NOT NULL), 2)
     ) AS quantity,
+
     COALESCE(
       price_per_unit,
-      (SELECT AVG(price_per_unit) FROM clean_step4 WHERE price_per_unit IS NOT NULL)
+      ROUND((SELECT AVG(price_per_unit) FROM clean_step4 WHERE price_per_unit IS NOT NULL), 2)
     ) AS price_per_unit,
+
     COALESCE(
       total_spent,
-      (SELECT AVG(total_spent) FROM clean_step4 WHERE total_spent IS NOT NULL)
+      ROUND((SELECT AVG(total_spent) FROM clean_step4 WHERE total_spent IS NOT NULL), 2)
     ) AS total_spent,
+
     payment_method,
     location,
     transaction_date
@@ -230,4 +234,4 @@ clean_step5 AS (
 
 -- Final cleaned dataset output
 SELECT *
-FROM clean_step5;
+FROM clean_step5
