@@ -1,13 +1,20 @@
--- =============================================================================
--- Post-Imputation Check → After filling missing values using the formula
--- Step 2: Verify that imputed values in clean_step4 do not violate the business rule
--- Expectation: No result (i.e., imputation using the formula was accurate)
--- =============================================================================
+-- =========================================================================================
+-- Validation Check: Business Logic Consistency After clean_step4
+-- -----------------------------------------------------------------------------------------
+-- Purpose:
+-- - Ensure that the values filled using business logic are accurate
+-- - Specifically, check whether the formula `quantity * price_per_unit = total_spent` holds
+--   for all rows where all three fields are now populated
+--
+-- Expectation:
+-- - No mismatches should be found if the logic in `clean_step4` was correctly applied
+--
+-- Notes:
+-- - This step helps catch any edge cases (e.g., rounding, division by zero)
+-- =========================================================================================
 SELECT quantity, price_per_unit, total_spent
 FROM clean_step4
-WHERE quantity * price_per_unit != total_spent;
-
--- Conclusion:
--- No mismatches found post-imputation. All rows, including those with filled values,
--- satisfy the formula `quantity × price_per_unit = total_spent`.
--- This confirms the imputation logic was applied correctly.
+WHERE quantity IS NOT NULL
+  AND price_per_unit IS NOT NULL
+  AND total_spent IS NOT NULL
+  AND quantity * price_per_unit != total_spent;
