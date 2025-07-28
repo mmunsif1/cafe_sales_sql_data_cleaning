@@ -12,7 +12,10 @@ FROM clean_step3;
 -- Expectation: No result (i.e., all rows satisfy the condition)
 SELECT quantity, price_per_unit, total_spent
 FROM clean_step3
-WHERE quantity * price_per_unit != total_spent;
+WHERE quantity IS NOT NULL
+  AND price_per_unit IS NOT NULL
+  AND total_spent IS NOT NULL
+  AND quantity * price_per_unit != total_spent;
 -- Conclusion:
 -- No mismatches found. The business logic `quantity × price_per_unit = total_spent` holds true for the entire dataset (excluding NULLs).
 -- This confirms the data is internally consistent and justifies using this formula to fill missing values where applicable.
