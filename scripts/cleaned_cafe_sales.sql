@@ -185,37 +185,27 @@ clean_step4 AS (
   FROM clean_step3
 ),
 
--- CTE 5 Option 1: Drop rows with any remaining NULLs or 'unknown'
--- - Removes incomplete records
--- - Results in only 4.86% data loss (486 out of 10,000 rows) for smoother phrasing.
--- - Suitable when missing data is minimal and unlikely to impact results
-clean_step5 AS (
-  SELECT
-    transaction_id,
-    item,
-    quantity,
-    price_per_unit,
-    total_spent,
-    payment_method,
-    location,
-    transaction_date
-  
-  FROM clean_step4
-  WHERE 
-    transaction_id IS NOT NULL AND
-    item IS NOT NULL AND
-    quantity IS NOT NULL AND
-    price_per_unit IS NOT NULL AND
-    total_spent IS NOT NULL AND
-    payment_method IS NOT NULL AND
-    location IS NOT NULL AND
-    transaction_date IS NOT NULL
-)
-
--- -- CTE 5 Option 2: Impute missing values with column-wise averages
--- -- - Good alternative if you prefer to retain all rows
--- -- - Works best when the proportion of NULLs is low (e.g., <15%)
-/*
+-- =====================================================================================
+-- CTE 5: Final Imputation Using Column-Wise Averages
+-- -------------------------------------------------------------------------------------
+-- Purpose:
+-- - This step retains all rows from the previous step (`clean_step4`)
+-- - Missing numerical values are imputed using average values from available data
+--
+-- Columns affected:
+-- - quantity           → filled with AVG(quantity)
+-- - price_per_unit     → filled with AVG(price_per_unit)
+-- - total_spent        → filled with AVG(total_spent)
+--
+-- Justification:
+-- - Ensures data completeness for all records
+-- - Avoids row loss due to NULLs
+-- - Only 26 rows affected
+--
+-- Notes:
+-- - This approach preserves more data than dropping NULLs
+-- - Categorical fields (like item, location, etc.) remain unchanged
+-- =====================================================================================
 clean_step5 AS (
   SELECT
     transaction_id,
@@ -237,7 +227,6 @@ clean_step5 AS (
     transaction_date
   FROM clean_step4
 )
-*/
 
 -- Final cleaned dataset output
 SELECT *
