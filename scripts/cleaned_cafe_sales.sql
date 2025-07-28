@@ -215,27 +215,29 @@ clean_step5 AS (
 -- -- CTE 5 Option 2: Impute missing values with column-wise averages
 -- -- - Good alternative if you prefer to retain all rows
 -- -- - Works best when the proportion of NULLs is low (e.g., <15%)
--- clean_step5 AS (
---   SELECT
---     transaction_id,
---     item,
---     COALESCE(
---       quantity,
---       (SELECT AVG(quantity) FROM clean_step4 WHERE quantity IS NOT NULL)
---     ) AS quantity,
---     COALESCE(
---       price_per_unit,
---       (SELECT AVG(price_per_unit) FROM clean_step4 WHERE price_per_unit IS NOT NULL)
---     ) AS price_per_unit,
---     COALESCE(
---       total_spent,
---       (SELECT AVG(total_spent) FROM clean_step4 WHERE total_spent IS NOT NULL)
---     ) AS total_spent,
---     payment_method,
---     location,
---     transaction_date
---   FROM clean_step4
--- )
+/*
+clean_step5 AS (
+  SELECT
+    transaction_id,
+    item,
+    COALESCE(
+      quantity,
+      (SELECT AVG(quantity) FROM clean_step4 WHERE quantity IS NOT NULL)
+    ) AS quantity,
+    COALESCE(
+      price_per_unit,
+      (SELECT AVG(price_per_unit) FROM clean_step4 WHERE price_per_unit IS NOT NULL)
+    ) AS price_per_unit,
+    COALESCE(
+      total_spent,
+      (SELECT AVG(total_spent) FROM clean_step4 WHERE total_spent IS NOT NULL)
+    ) AS total_spent,
+    payment_method,
+    location,
+    transaction_date
+  FROM clean_step4
+)
+*/
 
 -- Final cleaned dataset output
 SELECT *
