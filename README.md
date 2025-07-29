@@ -101,15 +101,7 @@ CASE
 
 ---
 
-### 🔹 `clean_step5`: Two Final Cleaning Options
-
-#### ✅ Option A: Drop Incomplete Rows
-
-- Removes rows with any remaining `NULL` or `'unknown'` values
-- Results in a loss of only 486 rows out of 10,000 (4.86%)
-- Suitable when aiming for high data precision with minimal information loss
-
-#### ✅ Option B: Impute Final Missing Numeric Values
+### 🔹 `clean_step5`: Impute Final Missing Numeric Values
 
 - Fills in remaining `NULL` values in `quantity`, `price_per_unit`, and `total_spent` using column averages
 - Suitable when:
