@@ -13,10 +13,10 @@ Using Common Table Expressions (CTEs), the project transforms the messy raw data
 - Convert columns to appropriate data types using `TRY_CAST`
 - Impute missing values using:
   - **Logical rules** (e.g., `quantity * price_per_unit = total_spent`)
-  - **Statistical averages** (optional step)
+  - **Statistical averages** 
 - Use **modular CTEs** to structure the cleaning process
 - Offer two alternative final cleaning strategies:
-  - Drop remaining incomplete records (minimal data loss)
+  - Drop remaining incomplete records (data loss)
   - Impute remaining missing numeric values with column averages (retain more data)
 
 ---
@@ -123,9 +123,18 @@ COALESCE(
 ```
 dirty_cafe_sales_project/
 │
-├── clean_cafe_sales.sql       -- Full SQL script with all cleaning steps and options
-├── README.md                  -- Project documentation (this file)
-└── (Optional: schema.txt, ER diagrams, or exploratory queries)
+├── datasets/
+│   └── dirty_cafe_sales.csv         # Raw uncleaned sales data
+│
+├── scripts/
+│   └── cleaned_cafe_sales.sql       # Full SQL script with all cleaning steps
+│
+├── tests/
+│   └── data_quality_validation.sql  # Post-cleaning checks for NULLs, unknowns, and anomalies
+│
+├── LICENSE                          # (Optional) License for reuse (e.g., MIT)
+├── README.md                        # Project overview, cleaning steps, and usage instructions
+
 ```
 
 ---
@@ -137,7 +146,6 @@ The project produces **two clean datasets** as final outcomes:
 1. **High Precision Dataset (Option A)**  
    - All remaining `NULL` and `'unknown'` values are removed  
    - Ensures **high data precision**  
-   - Results in **minimal data loss** (~4.86% of rows dropped)
 
 2. **Imputed Dataset (Option B)**  
    - Retains **all original rows** (no data loss)  
