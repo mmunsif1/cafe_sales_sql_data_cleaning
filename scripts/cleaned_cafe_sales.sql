@@ -89,6 +89,7 @@ WITH clean_step1 AS (
 -- For rows where `price_per_unit` is NULL but `item` is known,
 -- replace with a predefined standard price for that item.
 -- Items marked as 'unknown' are skipped here.
+-- GO to quality_checks.sql to see how we got these values
 -- ============================================
 clean_step2 AS (
   SELECT
@@ -125,6 +126,7 @@ clean_step2 AS (
 -- --------------------------------------------
 -- If `item` is 'unknown' but `price_per_unit` is present,
 -- we infer the item name based on standard price values.
+-- GO to quality_checks.sql to see how we got these values
 -- ============================================
 clean_step3 AS (
   SELECT
